@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="readypage-styles.css">
+</head>
+<body>
+    <div></div>
+    <div class="container">
+        <h1>Team name</h1>
+        <div class="player-container">
+            <span  style="display: flex; align-items: center; justify-content: center;">Player name</span>
+            <div class="player-status" id="myDiv"></div>
+            <button id="readyButton" class="player-ready">Ready</button>
+        </div>
+        <div class="another-player-container">
+            <span style="display: flex; align-items: center; justify-content: center;">Player Name</span>
+            <div class="player-status"></div>
+        </div>
+    </div><script>
+       document.getElementById("readyButton").addEventListener("click", function() {
+    var div = document.getElementById("myDiv");
+    var currentColor = div.style.backgroundColor;
+    if (currentColor === "green") {
+        div.style.backgroundColor = "red";
+    } else {
+        div.style.backgroundColor = "green";
+    }
+});
+</script>
+</body>
+</html>

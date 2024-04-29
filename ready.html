@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player Ready</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome, <span id="playerName">Player</span>!</h1>
+    <button id="readyButton">Ready</button>
+    <div id="statusIndicator" class="indicator"></div>
+    <div id="otherPlayersStatus"></div>
+  </div>
+  <style>
+    body {
+  font-family: 'Arial', sans-serif;
+  background-color: #292929;
+  color: #ffffff;
+}
+
+.container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #4287f5;
+  border: none;
+  color: #ffffff;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #3070cc;
+}
+
+.indicator {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-top: 20px;
+  background-color: red;
+}
+
+.other-player-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 5px;
+}
+
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+  const readyButton = document.getElementById('readyButton');
+  const statusIndicator = document.getElementById('statusIndicator');
+  const playerNameSpan = document.getElementById('playerName');
+  const otherPlayersStatus = document.getElementById('otherPlayersStatus');
+
+  let isReady = false;
+  let playerName = '';
+
+  // Simulated function to fetch player data from the database
+  getPlayerData()
+    .then(playerData => {
+      playerName = playerData.name || 'Player';
+      playerNameSpan.textContent = playerName;
+    })
+    .catch(error => {
+      console.error('Error fetching player data:', error);
+    });
+
+  // Create WebSocket connection
+  const socket = new WebSocket('ws://localhost:8080');
+
+  // Connection opened
+  socket.addEventListener('open', function (event) {
+    console.log('WebSocket connected');
+  });
+
+  // Listen for messages
+  socket.addEventListener('message', function (event) {
+    const data = JSON.parse(event.data);
+    if (data.playerName && data.ready !== undefined) {
+      updateOtherPlayerIndicator(data.playerName, data.ready);
+    }
+  });
+
+  readyButton.addEventListener('click', function () {
+    isReady = !isReady;
+    updateIndicator();
+    // Send ready status to server
+    socket.send(JSON.stringify({ playerName: playerName, ready: isReady }));
+  });
+
+  function updateIndicator() {
+    if (isReady) {
+      statusIndicator.style.backgroundColor = 'green';
+    } else {
+      statusIndicator.style.backgroundColor = 'red';
+    }
+  }
+
+  function updateOtherPlayerIndicator(playerName, isReady) {
+    const indicator = document.createElement('div');
+    indicator.classList.add('other-player-indicator');
+    indicator.style.backgroundColor = isReady ? 'green' : 'red';
+    otherPlayersStatus.appendChild(indicator);
+  }
+});
+
+// Simulated function to fetch player data from the database
+function getPlayerData() {
+  return new Promise((resolve, reject) => {
+    // Simulating fetching player data from a database
+    setTimeout(() => {
+      const playerData = {
+        name: "Player from Database"
+      };
+      resolve(playerData);
+    }, 1000); // Simulating delay of 1 second
+  });
+}
+
+  </script>
+</body>
+</html>

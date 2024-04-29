@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #2C3E50;
+            color: #FFFFFF;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #34495E;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            width: 200px;
+        }
+
+        button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #1ABC9C;
+            color: #FFFFFF;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #16A085;
+        }
+
+        textarea {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            width: 200px;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="join">
+            <P>JOIN:</P>
+            <input type="text" placeholder="Enter room code">
+            <button>Join</button>
+        </span>
+        <span class="host">
+            <p>HOST:</p>
+            <textarea style="text-align: center;" id="codeTextArea" rows="1" readonly></textarea><br>
+            <button onclick="generateCode()">Generate Code</button>
+           
+        </span>
+    </div>
+   
+
+<script>
+function generateCode() {
+    var code = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < 5; i++) {
+        code += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    document.getElementById("codeTextArea").value = code;
+}
+</script>
+</body>
+</html>
